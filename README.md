@@ -14,6 +14,8 @@
 ## State Table:
 <img width="1086" height="456" alt="image" src="https://github.com/user-attachments/assets/4eaf9196-bdc1-4125-b91c-a0c545a167dc" />
 
+[Link to Google Sheet](https://docs.google.com/spreadsheets/d/1RsZu3KsnwQQAp51Ip9har2o-DtIEsxkhf73vqLOv-rM/edit?usp=sharing)
+
 ## States and Priorities:
 <img width="680" height="244" alt="image" src="https://github.com/user-attachments/assets/f661871c-ef84-4864-bdff-82eb853df07a" />
 
