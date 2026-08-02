@@ -14,10 +14,11 @@
 ## State Table:
 <img width="1086" height="456" alt="image" src="https://github.com/user-attachments/assets/4eaf9196-bdc1-4125-b91c-a0c545a167dc" />
 
-
 ## States and Priorities:
 <img width="680" height="244" alt="image" src="https://github.com/user-attachments/assets/f661871c-ef84-4864-bdff-82eb853df07a" />
 
-## Mealy Finite State Machine
+## Mealy Finite State Machine:
 <img width="1645" height="1129" alt="Screenshot 2026-08-01 210720" src="https://github.com/user-attachments/assets/5d3b64ef-d2c4-47ef-87af-e9f45868b976" />
-[Draw.io File](https://github.com/user-attachments/files/30638522/Computer.Architecture.Final.Project.Mealy.FSM.drawio)
+
+[Draw.io File for Mealy Finite State Machine](https://github.com/user-attachments/files/30638522/Computer.Architecture.Final.Project.Mealy.FSM.drawio)
+
