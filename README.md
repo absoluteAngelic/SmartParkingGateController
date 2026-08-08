@@ -24,3 +24,7 @@
 
 [Draw.io File for Mealy Finite State Machine](https://github.com/user-attachments/files/30638522/Computer.Architecture.Final.Project.Mealy.FSM.drawio)
 
+## Working Controller simulation on lgsim.io (Both Versions)
+<img width="1396" height="726" alt="image" src="https://github.com/user-attachments/assets/f6902e79-5915-4b68-9117-e7c1022127ad" />
+<img width="1462" height="706" alt="image" src="https://github.com/user-attachments/assets/18ffc50b-cc94-4970-8539-a04d87058f3d" />
+
