@@ -7,7 +7,7 @@
 |&check;|State Table with states, inputs, outputs, and transitions|
 |&check;|State Diagram (Mealy Finite State Machine)|
 |&cross;|Expand Readme with short overview, team members, our option, how to run it, and simple controller explanation|
-|&cross;|Working Controller simulation/implementation|
+|&check;|Working Controller simulation/implementation|
 |&cross;|Unity interactable visual simulation|
 |&cross;|Testing (test table/screenshots, normal cases and include at least 1-2 edge/error cases|
 
