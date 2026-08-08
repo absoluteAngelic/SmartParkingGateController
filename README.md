@@ -6,7 +6,7 @@ The Smart Parking Gate Controller is a finite state machine designed to control 
 
 If entry is approved, the controller opens the gate, updates the available parking count, waits for the vehicle to pass, and then closes the gate. The controller also handles invalid tickets, full parking lots, and emergency situations through a dedicated Failsafe state.
 
-The controller was designed as a **Mealy Finite State Machine** and implemented as a working digital logic simulation using [lgsim.io](https://lgsim.io).
+The controller was designed as a **Mealy Finite State Machine** and implemented as a working digital logic simulation using [lgsim.io](https://lgsim.io), as well as a Unity interactable visual representation.
 
 ---
 
