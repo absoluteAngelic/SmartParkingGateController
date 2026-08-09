@@ -106,6 +106,15 @@ To see our Controller Simulation please:
 - **Click Import Workspace**
 - **Select the .lgs file and then you can see the full Simulation**
 
+## Unity visual project
+<img width="1248" height="634" alt="image" src="https://github.com/user-attachments/assets/c5efe04c-90a3-4532-8652-7606393babf9" />
+
+The red rectangles are cars, the yellow rectangle is the gate. Everything moves/is animated. 
+
+To run/view this project, open unity hub, press add, add project from disk, select the subfolder in this repo, then you'll be shown which version of the unity editor must be installed. You can install it, then open the project, and run it by pressing the triangle at the top of the unity editor window.
+
+
+
 ## Test Table
 <img width="887" height="565" alt="image" src="https://github.com/user-attachments/assets/984728ef-6e57-4bd9-932b-2df6478bb589" />
 
