@@ -106,10 +106,6 @@ To see our Controller Simulation please:
 - **Click Import Workspace**
 - **Select the .lgs file and then you can see the full Simulation**
 
-## Unity Interactible Visual Simulation
-
-smtn here
-
 ## Test Table
 <img width="887" height="565" alt="image" src="https://github.com/user-attachments/assets/984728ef-6e57-4bd9-932b-2df6478bb589" />
 
