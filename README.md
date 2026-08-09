@@ -84,3 +84,21 @@ The controller uses the following priorities when multiple conditions are true:
 SpotsAvailable=0 > ValidTicket=0
 Emergency=1 > *
 Reset=1 > * only in Failsafe when Emergency=0
+```
+## State Table & All Possible States
+<img width="1210" height="517" alt="image" src="https://github.com/user-attachments/assets/3600435b-77a0-4a4e-bded-8c66975948ef" />
+
+[Link to Google Sheet](https://docs.google.com/spreadsheets/d/1RsZu3KsnwQQAp51Ip9har2o-DtIEsxkhf73vqLOv-rM/edit?usp=sharing)
+
+## Mealy Finite State Machine:
+<img width="1645" height="1129" alt="image" src="https://github.com/user-attachments/assets/b141e3d4-0669-4125-9381-f01ffdd2ba34" />
+
+## Controller Simulation (using lgsim.io)
+<img width="1205" height="702" alt="image" src="https://github.com/user-attachments/assets/9270779f-af9e-414c-877d-89980a829998" />
+
+To see our Controller Simulation please:
+**Download our Smart_Parking_Gate_Controller.lgs file from our repo** 
+**Go to [lgsim.io](lgsim.io)**
+**Click File in the top left**
+**Click Import Workspace**
+**Select the .lgs file and then you can see the full Simulation**
