@@ -93,11 +93,14 @@ Reset=1 > * only in Failsafe when Emergency=0
 ## Mealy Finite State Machine:
 <img width="1645" height="1129" alt="image" src="https://github.com/user-attachments/assets/b141e3d4-0669-4125-9381-f01ffdd2ba34" />
 
-## Controller Simulation (using lgsim.io)
+## Both Versions of Controller Simulation (using lgsim.io)
 <img width="1205" height="702" alt="image" src="https://github.com/user-attachments/assets/9270779f-af9e-414c-877d-89980a829998" />
+<img width="1353" height="657" alt="image" src="https://github.com/user-attachments/assets/be365791-5e82-45aa-b734-1adfdc821f2e" />
+
 
 To see our Controller Simulation please:
-**Download our Smart_Parking_Gate_Controller.lgs file from our repo** 
+
+- **Download our Smart_Parking_Gate_Controller.lgs file from our repo** 
 - **Go to [lgsim.io](lgsim.io)**
 - **Click File in the top left**
 - **Click Import Workspace**
@@ -109,11 +112,12 @@ smtn here
 
 ## Test Table
 <img width="887" height="565" alt="image" src="https://github.com/user-attachments/assets/984728ef-6e57-4bd9-932b-2df6478bb589" />
+
 [Link to Google Sheet](https://docs.google.com/spreadsheets/d/1RsZu3KsnwQQAp51Ip9har2o-DtIEsxkhf73vqLOv-rM/edit?usp=sharing)
 
-The Yellow is Normal
-The Red is Edge/ Error
-The Green is technically Normal? (It's a recovery test so I'm not 100% sure the classification)
+- The Yellow is Normal
+- The Red is Edge/ Error
+- The Green is technically Normal? (It's a recovery test so I'm not 100% sure the classification)
 
 ## Breakdown of Work
 All the work was evenly distributed with the exception(s) of:
