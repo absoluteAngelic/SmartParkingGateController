@@ -3,9 +3,27 @@ using UnityEngine;
 
 public class GateController : MonoBehaviour
 {
+    public GameObject gateAnchor;
+    public GameObject carPastGatePoint;
+    public GameObject currentWaitingCar;
+    public GameObject carObjToSpawn;
+    public GameObject carStartPoint;
+    GameObject targetSpot;
+
+    float translationTimeCounter;
+    float clampedTranslationCurrentValue;
+    float translationTargetTime;
+
+    bool moveCarPastGate;
+    bool moveCarToSpot;
+
     bool TicketEntered;
     bool Emergency;
     bool Reset;
+
+    bool carCurrentlyWaiting = true;
+
+    bool sentFailsafeOpenSignal;
 
     public int takenSpots;
     public int totalSpots;
@@ -25,8 +43,14 @@ public class GateController : MonoBehaviour
     public float clockDelay = 1f;
     float clockTimer;
 
+    Quaternion startingRotation;
+    Quaternion targetRotation;
+    float rotationTargetTime;
+    float rotationTimeCounter;
+    float clampedRotationCurrentValue;
+
     List<int> validTicketNumbers = new List<int>() { 173091, 128439 };
-    int userTicketNumber = 128439;
+    public int userTicketNumber = 128439;
 
     enum State
     {
@@ -45,6 +69,39 @@ public class GateController : MonoBehaviour
 
     void Update()
     {
+        if (rotationTimeCounter < rotationTargetTime)
+        {
+            clampedRotationCurrentValue = rotationTimeCounter / rotationTargetTime;
+            gateAnchor.transform.rotation = Quaternion.Lerp(startingRotation, targetRotation, clampedRotationCurrentValue);
+            rotationTimeCounter += Time.deltaTime;
+        }
+
+        if (moveCarPastGate && translationTimeCounter <= (translationTargetTime / 2))
+        {
+            clampedTranslationCurrentValue = translationTimeCounter / (translationTargetTime / 2);
+            currentWaitingCar.transform.position = Vector2.Lerp(carStartPoint.transform.position, carPastGatePoint.transform.position, clampedTranslationCurrentValue);
+            translationTimeCounter += Time.deltaTime;
+        }
+        else if (moveCarPastGate && translationTimeCounter > (translationTargetTime / 2))
+        {
+            moveCarPastGate = false;
+            moveCarToSpot = true;
+            translationTimeCounter = 0f;
+        }
+
+        if (moveCarToSpot && translationTimeCounter <= (translationTargetTime / 2))
+        {
+            clampedTranslationCurrentValue = translationTimeCounter / (translationTargetTime / 2);
+            currentWaitingCar.transform.position = Vector2.Lerp(carPastGatePoint.transform.position, targetSpot.transform.position, clampedTranslationCurrentValue);
+            translationTimeCounter += Time.deltaTime;
+        }
+        else if (moveCarToSpot && translationTimeCounter > (translationTargetTime / 2))
+        {
+            moveCarToSpot = false;
+            translationTimeCounter = 0f;
+            carCurrentlyWaiting = false;
+        }
+
         CheckForInputs();
 
         clockTimer += Time.deltaTime;
@@ -73,6 +130,25 @@ public class GateController : MonoBehaviour
                 Reset = false;
             }
         }
+    }
+
+    void MoveCarToSpot(float time)
+    {
+        if (takenSpots < totalSpots)
+        {
+            translationTargetTime = time;
+            translationTimeCounter = 0f;
+            moveCarPastGate = true;
+            targetSpot = GameObject.Find($"CarSpot{++takenSpots}");
+        }
+    }
+
+    void GateRotate(int angle, int time)
+    {
+        rotationTimeCounter = 0f;
+        startingRotation = gateAnchor.transform.rotation;
+        targetRotation = startingRotation * Quaternion.Euler(0, 0, -angle);
+        rotationTargetTime = time;
     }
 
     void CheckForInputs()
@@ -135,17 +211,19 @@ public class GateController : MonoBehaviour
             if (takenSpots >= totalSpots)
             {
                 outputs.Add("Speaker_LotsFull");
-                return currentState;
+                TicketEntered = false;
+                return State.CLOSED;
             }
             else if (!ticketValid)
             {
                 outputs.Add("Speaker_InvalidTicket");
-                return currentState;
+                TicketEntered = false;
+                return State.CLOSED;
             }
             else
             {
                 outputs.Add("TakeOneSpot");
-                takenSpots++;
+                GateRotate(90, GateOpeningTime);
                 return State.OPENING;
             }
         }
@@ -165,6 +243,7 @@ public class GateController : MonoBehaviour
             {
                 gateOpeningCounter = 0;
                 outputs.Add("StartGateOpenTimer");
+                MoveCarToSpot(GateOpenTime);
                 return State.OPEN;
             }
             else
@@ -188,6 +267,7 @@ public class GateController : MonoBehaviour
             if (GateOpenTimerDone)
             {
                 gateOpenCounter = 0;
+                GateRotate(-90, GateClosingTime);
                 return State.CLOSING;
             }
             else
@@ -212,6 +292,11 @@ public class GateController : MonoBehaviour
             {
                 gateClosingCounter = 0;
                 TicketEntered = false;
+                if (!carCurrentlyWaiting)
+                {
+                    currentWaitingCar = Instantiate(carObjToSpawn, carStartPoint.transform.position, carObjToSpawn.transform.rotation);
+                    carCurrentlyWaiting = true;
+                }
                 return State.CLOSED;
             }
             else
@@ -235,7 +320,9 @@ public class GateController : MonoBehaviour
             if (Reset && !Emergency)
             {
                 gateOpeningCounter = 0;
+                sentFailsafeOpenSignal = false;
                 Reset = false;
+                GateRotate(-90, GateClosingTime);
                 return State.CLOSING;
             }
             else if (GateOpeningTimerDone)
@@ -245,6 +332,11 @@ public class GateController : MonoBehaviour
             else if (!GateOpeningTimerDone)
             {
                 outputs.Add("MotorOpenGate");
+                if (!sentFailsafeOpenSignal)
+                {
+                    sentFailsafeOpenSignal = true;
+                    GateRotate(90, GateOpeningTime);
+                }
                 gateOpeningCounter++;
                 return currentState;
             }
