@@ -49,8 +49,8 @@ Our implementation includes:
 | &check; | State Diagram (Mealy Finite State Machine) |
 | &check; | Expand Readme with short overview, team members, our option, how to run it, and simple controller explanation |
 | &check; | Working Controller simulation/implementation |
-| &cross; | Unity interactable visual simulation |
-| &cross; | Testing (test table/screenshots, normal cases and include at least 1-2 edge/error cases) |
+| &check; | Unity interactable visual simulation |
+| &check; | Testing (test table/screenshots, normal cases and include at least 1-2 edge/error cases) |
 
 ---
 
