@@ -1,38 +1,51 @@
-using System;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GateController : MonoBehaviour
 {
-    bool ValidCard = true;
+    bool TicketEntered;
     bool Emergency;
     bool Reset;
-    bool DoorOpenSensor = true;
-    bool DoorClosedSensor = true;
 
-    float timer;
-    bool TimerDone;
-    bool timerStart;
-    int timerDuration = 2;
+    public int takenSpots;
+    public int totalSpots;
+
+    public int GateOpenTime = 2;
+    int gateOpenCounter;
+    bool GateOpenTimerDone;
+
+    public int GateOpeningTime = 2;
+    int gateOpeningCounter;
+    bool GateOpeningTimerDone;
+
+    public int GateClosingTime = 2;
+    int gateClosingCounter;
+    bool GateClosingTimerDone;
 
     public float clockDelay = 1f;
-    public float clockTimer;
+    float clockTimer;
+
+    List<int> validTicketNumbers = new List<int>() { 173091, 128439 };
+    int userTicketNumber = 128439;
 
     enum State
     {
-        LOCKED,
-        UNLOCKING,
+        CLOSED,
+        CHECKING,
+        OPENING,
         OPEN,
         CLOSING,
-        ERROR
+        FAILSAFE
     }
 
-    State currentStateGlobal = State.LOCKED;
+    List<string> outputs = new List<string>();
+
+    State currentStateGlobal = State.CLOSED;
     State nextState;
 
     void Update()
     {
-        TimerController();
+        CheckForInputs();
 
         clockTimer += Time.deltaTime;
 
@@ -40,87 +53,212 @@ public class GateController : MonoBehaviour
         {
             clockTimer = 0f;
 
-            Debug.Log(currentStateGlobal);
-
             nextState = Transition(currentStateGlobal);
 
             currentStateGlobal = nextState;
+
+            string toBeOutput = "";
+
+            for (int i = 0; i < outputs.Count; i++)
+            {
+                toBeOutput += outputs[i];
+            }
+
+            Debug.Log($"{currentStateGlobal}: {toBeOutput}");
+
+            outputs.Clear();
+
+            if (Reset)
+            {
+                Reset = false;
+            }
+        }
+    }
+
+    void CheckForInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            TicketEntered = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            Emergency = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Period))
+        {
+            Emergency = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            Reset = true;
+        }
+    }
+
+    void CheckTicket(out bool ticketValid)
+    {
+        ticketValid = false;
+
+        for (int i = 0; i < validTicketNumbers.Count; i++)
+        {
+            if (userTicketNumber == validTicketNumbers[i])
+            {
+                ticketValid = true;
+            }
         }
     }
 
     State Transition(State currentState)
     {
-        if (Emergency)
+        if (Emergency && currentState != State.FAILSAFE)
         {
-            return State.ERROR;
+            return State.FAILSAFE;
         }
-        else if (currentState == State.LOCKED)
+
+        else if (currentState == State.CLOSED)
         {
-            if (ValidCard)
-                return State.UNLOCKING;
+            if (TicketEntered)
+                return State.CHECKING;
             // Send output to unlock door
             else
                 return currentState;
         }
-        else if (currentState == State.UNLOCKING)
+
+        else if (currentState == State.CHECKING)
         {
-            if (DoorOpenSensor)
-                return State.OPEN;
-            else
+            bool ticketValid;
+            CheckTicket(out ticketValid);
+
+            if (takenSpots >= totalSpots)
+            {
+                outputs.Add("Speaker_LotsFull");
                 return currentState;
+            }
+            else if (!ticketValid)
+            {
+                outputs.Add("Speaker_InvalidTicket");
+                return currentState;
+            }
+            else
+            {
+                outputs.Add("TakeOneSpot");
+                takenSpots++;
+                return State.OPENING;
+            }
         }
+
+        else if (currentState == State.OPENING)
+        {
+            if (gateOpeningCounter < GateOpeningTime)
+            {
+                GateOpeningTimerDone = false;
+            }
+            else
+            {
+                GateOpeningTimerDone = true;
+            }
+
+            if (GateOpeningTimerDone)
+            {
+                gateOpeningCounter = 0;
+                outputs.Add("StartGateOpenTimer");
+                return State.OPEN;
+            }
+            else
+            {
+                gateOpeningCounter++;
+                return currentState;
+            }
+        }
+
         else if (currentState == State.OPEN)
         {
-            timerStart = true;
-
-            if (TimerDone)
-                return State.CLOSING;
+            if (gateOpenCounter >= GateOpenTime)
+            {
+                GateOpenTimerDone = true;
+            }
             else
+            {
+                GateOpenTimerDone = false;
+            }
+
+            if (GateOpenTimerDone)
+            {
+                gateOpenCounter = 0;
+                return State.CLOSING;
+            }
+            else
+            {
+                gateOpenCounter++;
                 return currentState;
+            }
         }
+
         else if (currentState == State.CLOSING)
         {
-            if (DoorClosedSensor)
+            if (gateClosingCounter < GateClosingTime)
             {
-                return State.LOCKED;
-                // Send output to lock door
+                GateClosingTimerDone = false;
             }
             else
+            {
+                GateClosingTimerDone = true;
+            }
+
+            if (GateClosingTimerDone)
+            {
+                gateClosingCounter = 0;
+                TicketEntered = false;
+                return State.CLOSED;
+            }
+            else
+            {
+                gateClosingCounter++;
                 return currentState;
+            }
         }
-        else if (currentState == State.ERROR)
+
+        else if (currentState == State.FAILSAFE)
         {
+            if (gateOpeningCounter < GateOpeningTime)
+            {
+                GateOpeningTimerDone = false;
+            }
+            else
+            {
+                GateOpeningTimerDone = true;
+            }
+
             if (Reset && !Emergency)
             {
-                return State.LOCKED;
+                gateOpeningCounter = 0;
+                Reset = false;
+                return State.CLOSING;
+            }
+            else if (GateOpeningTimerDone)
+            {
+                return currentState;
+            }
+            else if (!GateOpeningTimerDone)
+            {
+                outputs.Add("MotorOpenGate");
+                gateOpeningCounter++;
+                return currentState;
             }
             else
+            {
+                Debug.LogError("No case was true in FAILSAFE block of if/else chain");
                 return currentState;
+            }
         }
+
         else
         {
+            Debug.LogError("State not part of enum");
             return currentState;
-        }
-
-    }
-
-    void TimerController()
-    {
-        if (timerStart)
-        {
-            timer += Time.deltaTime;
-
-            if (TimerDone)
-            {
-                timerStart = false;
-                timer = 0;
-                TimerDone = false;
-            }
-
-            if (timer >= timerDuration)
-            {
-                TimerDone = true;
-            }
         }
     }
 }
