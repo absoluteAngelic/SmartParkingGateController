@@ -98,7 +98,7 @@ Reset=1 > * only in Failsafe when Emergency=0
 
 To see our Controller Simulation please:
 **Download our Smart_Parking_Gate_Controller.lgs file from our repo** 
-**Go to [lgsim.io](lgsim.io)**
-**Click File in the top left**
-**Click Import Workspace**
-**Select the .lgs file and then you can see the full Simulation**
+- **Go to [lgsim.io](lgsim.io)**
+- **Click File in the top left**
+- **Click Import Workspace**
+- **Select the .lgs file and then you can see the full Simulation**
