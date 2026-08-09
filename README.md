@@ -109,7 +109,7 @@ To see our Controller Simulation please:
 ## Unity visual project
 <img width="1248" height="634" alt="image" src="https://github.com/user-attachments/assets/c5efe04c-90a3-4532-8652-7606393babf9" />
 
-The red rectangles are cars, the yellow rectangle is the gate. Everything moves/is animated. 
+The red rectangles are cars, the yellow rectangle is the gate. Everything moves/is animated. Comma starts an emergency, period stops it, backspace is reset, enter inserts/submits the ticket number that's set in the unity inspector.
 
 To run/view this project, open unity hub, press add, add project from disk, select the subfolder in this repo, then you'll be shown which version of the unity editor must be installed. You can install it, then open the project, and run it by pressing the triangle at the top of the unity editor window.
 
