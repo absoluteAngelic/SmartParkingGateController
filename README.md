@@ -102,3 +102,21 @@ To see our Controller Simulation please:
 - **Click File in the top left**
 - **Click Import Workspace**
 - **Select the .lgs file and then you can see the full Simulation**
+
+## Unity Interactible Visual Simulation
+
+smtn here
+
+## Test Table
+<img width="887" height="565" alt="image" src="https://github.com/user-attachments/assets/984728ef-6e57-4bd9-932b-2df6478bb589" />
+[Link to Google Sheet](https://docs.google.com/spreadsheets/d/1RsZu3KsnwQQAp51Ip9har2o-DtIEsxkhf73vqLOv-rM/edit?usp=sharing)
+
+The Yellow is Normal
+The Red is Edge/ Error
+The Green is technically Normal? (It's a recovery test so I'm not 100% sure the classification)
+
+## Breakdown of Work
+All the work was evenly distributed with the exception(s) of:
+- Luke taking the lead on the Unity Visual Simulation
+- Azfar focusing on the Circuit Simulations on lgsim
+- and Yusuf focusing on troubleshooting our logic
